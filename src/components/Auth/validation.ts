@@ -1,4 +1,4 @@
-import * as Joi from 'joi';
+import Joi from 'joi';
 import Validation from '../validation';
 import { IUserModel } from '../User/model';
 

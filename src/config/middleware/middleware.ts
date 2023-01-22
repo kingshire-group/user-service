@@ -1,9 +1,8 @@
-import * as bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import * as express from 'express';
-import { RequestHandler, NextFunction } from 'express';
+import express from 'express';
 import helmet from 'helmet';
 import { HttpError } from '../error/index';
 import { sendHttpErrorModule } from '../error/sendHttpError';

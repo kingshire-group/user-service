@@ -1,8 +1,8 @@
-import * as express from 'express';
-import * as http from 'http';
-import * as path from 'path';
+import express from 'express';
+import http from 'http';
+import path from 'path';
 import swaggerJSDoc from 'swagger-jsdoc';
-import * as swaggerUi from 'swagger-ui-express';
+import swaggerUi from 'swagger-ui-express';
 import * as jwtConfig from '../config/middleware/jwtAuth';
 import AuthRouter from './AuthRouter';
 import UserRouter from './UserRouter';

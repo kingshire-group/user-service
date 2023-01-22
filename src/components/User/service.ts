@@ -1,4 +1,4 @@
-import * as Joi from 'joi';
+import Joi from 'joi';
 import { Types } from 'mongoose';
 import UserModel, { IUserModel } from './model';
 import UserValidation from './validation';
