@@ -12,29 +12,13 @@ declare global {
 	}
  }
 
-/**
- *
- * @param {RequestWithUser} req
- * @param {Response} res
- * @param {NextFunction} next
- * @returns {void}
- * @swagger
- *  components:
- *   securitySchemes:
- *     ApiKeyAuth:
- *       type: apiKey
- *       in: header
- *       name: x-access-token
- */
 export function isAuthenticated(req: Request, res: Response, next: NextFunction): void {
     const token: string | string[] | undefined = req.headers['x-access-token'];
 
     if (token) {
         try {
             const user: object | string = jwt.verify(token.toString(), app.get('secret'));
-
             req.user = user;
-
             return next();
         } catch (error) {
             return next(new HttpError(401, http.STATUS_CODES[401]));

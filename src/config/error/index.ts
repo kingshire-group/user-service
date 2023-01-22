@@ -1,10 +1,5 @@
 import http from 'http';
 
-/**
- * @export
- * @class HttpError
- * @extends {Error}
- */
 export class HttpError extends Error {
     status: number;
 
@@ -12,12 +7,6 @@ export class HttpError extends Error {
 
     name: any;
 
-    /**
-     * Creates an instance of HttpError.
-     * @param {number} [status]
-     * @param {string} [message]
-     * @memberof HttpError
-     */
     constructor(status ? : number, message ? : string) {
         super(message);
 

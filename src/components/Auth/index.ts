@@ -5,13 +5,6 @@ import AuthService from './service';
 import HttpError from '../../config/error';
 import { IUserModel } from '../User/model';
 
-/**
- * @export
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- * @returns {Promise < void >}
- */
 export async function signup(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
         const user: IUserModel = await AuthService.createUser(req.body);
@@ -36,13 +29,6 @@ export async function signup(req: Request, res: Response, next: NextFunction): P
     }
 }
 
-/**
- * @export
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- * @returns {Promise < void >}
- */
 export async function login(req: Request, res: Response, next: NextFunction): Promise < void > {
     try {
         const user: IUserModel = await AuthService.getUser(req.body);
