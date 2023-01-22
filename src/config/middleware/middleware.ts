@@ -1,9 +1,10 @@
 import * as bodyParser from 'body-parser';
-import * as compression from 'compression';
-import * as cookieParser from 'cookie-parser';
-import * as cors from 'cors';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import * as express from 'express';
-import * as helmet from 'helmet';
+import { RequestHandler, NextFunction } from 'express';
+import helmet from 'helmet';
 import { HttpError } from '../error/index';
 import { sendHttpErrorModule } from '../error/sendHttpError';
 
@@ -44,16 +45,19 @@ export function configure(app: express.Application): void {
     });
 }
 
-interface CustomResponse extends express.Response {
-    sendHttpError: (error: HttpError | Error, message ? : string) => void;
+declare global {
+	namespace Express {
+	  interface Response {
+		sendHttpError: (error: HttpError | Error, message ? : string) => void;
+	  }
+	}
 }
-
 /**
  * @export
  * @param {express.Application} app
  */
 export function initErrorHandler(app: express.Application): void {
-    app.use((error: Error, req: express.Request, res: CustomResponse) => {
+    app.use((error: Error, req: express.Request, res: express.Response) => {
         if (typeof error === 'number') {
             error = new HttpError(error); // next(404)
         }

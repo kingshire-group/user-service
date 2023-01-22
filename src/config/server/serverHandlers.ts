@@ -1,4 +1,4 @@
-import * as debug from 'debug';
+import debug from 'debug';
 import { Address } from 'cluster';
 
 /**
@@ -33,9 +33,9 @@ export function onError(error: NodeJS.ErrnoException, port: number | string | bo
 /**
  * @export onListening
  */
-export function onListening(): void {
+export function onListening(this: any): void {
     const addr: Address = this.address();
     const bind: string = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
 
-    debug(`Listening on ${bind}`);
+    console.log(`Listening on ${bind}`);
 }

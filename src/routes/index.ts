@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as http from 'http';
 import * as path from 'path';
-import * as swaggerJSDoc from 'swagger-jsdoc';
+import swaggerJSDoc from 'swagger-jsdoc';
 import * as swaggerUi from 'swagger-ui-express';
 import * as jwtConfig from '../config/middleware/jwtAuth';
 import AuthRouter from './AuthRouter';

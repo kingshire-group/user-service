@@ -10,7 +10,7 @@ export class HttpError extends Error {
 
     message: string;
 
-    name: 'HttpError';
+    name: any;
 
     /**
      * Creates an instance of HttpError.

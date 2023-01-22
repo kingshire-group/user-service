@@ -4,9 +4,13 @@ import * as http from 'http';
 import app from '../server/server';
 import HttpError from '../error';
 
-interface RequestWithUser extends Request {
-    user: object | string;
-}
+declare global {
+	namespace Express {
+	  interface Request {
+		user: object | string;
+	  }
+	}
+ }
 
 /**
  *
@@ -22,8 +26,8 @@ interface RequestWithUser extends Request {
  *       in: header
  *       name: x-access-token
  */
-export function isAuthenticated(req: RequestWithUser, res: Response, next: NextFunction): void {
-    const token: string | string[] = req.headers['x-access-token'];
+export function isAuthenticated(req: Request, res: Response, next: NextFunction): void {
+    const token: string | string[] | undefined = req.headers['x-access-token'];
 
     if (token) {
         try {

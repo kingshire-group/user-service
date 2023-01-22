@@ -1,17 +1,28 @@
 {
-    "compilerOptions": {
-        "outDir": "./build/",
-        "module": "commonjs",
-        "allowSyntheticDefaultImports": true,
-        "noImplicitAny": true,
-        "target": "es6",
-        "sourceMap": true,
-        "plugins": [
-            {
-                "name": "tslint-language-service"
-            }
-        ]
-    },
-    "include": ["./src/**/*"],
-    "exclude": ["node_modules"]
+	"extends": "ts-node/node16/tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./build/",
+		"module": "commonjs",
+		"allowSyntheticDefaultImports": true,
+		"noImplicitAny": true,
+		"target": "ESNext",
+		"sourceMap": true,
+		"plugins": [
+			{
+				"name": "tslint-language-service"
+			}
+		],
+		"typeRoots": [
+			"@types",
+			"./node_modules/@types",
+			"src/*"
+		]
+	},
+	"ts-node": {
+		"esm": true,
+		"experimentalSpecifierResolution": "node"
+	},
+	"lib": ["esnext"],
+	"include": ["./src/**/*"],
+	"exclude": ["node_modules"]
 }

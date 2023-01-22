@@ -2,9 +2,13 @@ import { NextFunction, Request } from 'express';
 import * as express from 'express';
 import { HttpError } from './index';
 
-interface CustomResponse extends express.Response {
-    sendHttpError: (error: HttpError | Error, message ? : string) => void;
-}
+ declare global {
+	namespace Express {
+	  interface Response {
+		sendHttpError: (error: HttpError | Error, message ? : string) => void;
+	  }
+	}
+ }
 
 /**
  *
@@ -27,7 +31,7 @@ const generateHTML: Function = (error: HttpError): string => {
 /**
  * @exports
  * @param {Request} req
- * @param {*} res
+ * @param {express.Response} res
  * @param {NextFunction} next
  *
  * @swagger
@@ -48,8 +52,8 @@ const generateHTML: Function = (error: HttpError): string => {
  *          description: Error description
  *          example: User created
  */
-export function sendHttpErrorModule(req: Request, res: CustomResponse, next: NextFunction): void {
-    res.sendHttpError = (error: HttpError): void => {
+export function sendHttpErrorModule(req: Request, res:express.Response, next: NextFunction): void {
+    res.sendHttpError = (error: any) => {
         res.status(error.status);
 
         /**
@@ -61,7 +65,7 @@ export function sendHttpErrorModule(req: Request, res: CustomResponse, next: Nex
             req.xhr
             || req.is('json')
             || (req.is('json') && req.get('Accept'))
-            || !(req.get('Accept') && req.get('Accept').indexOf('html') !== -1)
+            || !(req.get('Accept') && req.get('Accept')?.indexOf('html') !== -1)
         ) {
             res.json({
                 status: error.status,
