@@ -1,7 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { Document, Schema } from 'mongoose';
-import { NextFunction } from 'express';
 import * as connections from '../../config/connection/connection';
 
 export type AuthToken = {
@@ -76,7 +75,7 @@ const UserSchema: Schema = new Schema({
 }, {
     collection: 'usermodel',
     versionKey: false,
-}).pre('save', async function (next: NextFunction): Promise < void > {
+}).pre('save', async function (next): Promise < void > {
     const user: IUserModel = this; // tslint:disable-line
 
     if (!user.isModified('password')) {
@@ -90,7 +89,7 @@ const UserSchema: Schema = new Schema({
 
         user.password = hash;
         next();
-    } catch (error) {
+    } catch (error: any) {
         return next(error);
     }
 });
@@ -103,7 +102,7 @@ UserSchema.methods.comparePassword = async function (candidatePassword: string):
         const match: boolean = await bcrypt.compare(candidatePassword, this.password);
 
         return match;
-    } catch (error) {
+    } catch (error: any) {
         return error;
     }
 };

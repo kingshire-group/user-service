@@ -15,7 +15,7 @@ export async function findAll(req: Request, res: Response, next: NextFunction): 
         const users: IUserModel[] = await UserService.findAll();
 
         res.status(200).json(users);
-    } catch (error) {
+    } catch (error: any) {
         next(new HttpError(error.message.status, error.message));
     }
 }
@@ -32,7 +32,7 @@ export async function findOne(req: Request, res: Response, next: NextFunction): 
         const user: IUserModel = await UserService.findOne(req.params.id);
 
         res.status(200).json(user);
-    } catch (error) {
+    } catch (error: any) {
         next(new HttpError(error.message.status, error.message));
     }
 }
@@ -49,7 +49,7 @@ export async function create(req: Request, res: Response, next: NextFunction): P
         const user: IUserModel = await UserService.insert(req.body);
 
         res.status(201).json(user);
-    } catch (error) {
+    } catch (error: any) {
         next(new HttpError(error.message.status, error.message));
     }
 }
@@ -66,7 +66,7 @@ export async function remove(req: Request, res: Response, next: NextFunction): P
         const user: IUserModel = await UserService.remove(req.params.id);
 
         res.status(200).json(user);
-    } catch (error) {
+    } catch (error: any) {
         next(new HttpError(error.message.status, error.message));
     }
 }

@@ -29,13 +29,7 @@ abstract class Validation {
                 helpers: Joi.CustomHelpers,
             ): Object | string {
                 if (!Types.ObjectId.isValid(value)) {
-                    return this.createError(
-                        'objectId.base',
-                        {
-                            value,
-                        },
-                        helpers,
-                    );
+                    return 'Error'
                 }
 
                 return value; // Keep the value as it was

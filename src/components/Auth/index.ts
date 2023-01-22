@@ -25,7 +25,7 @@ export async function signup(req: Request, res: Response, next: NextFunction): P
             token,
             message: 'Sign in successfull',
         });
-    } catch (error) {
+    } catch (error: any) {
         if (error.code === 500) {
             return next(new HttpError(error.message.status, error.message));
         }
@@ -57,7 +57,7 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
             token,
             message: 'Sign in successfull',
         });
-    } catch (error) {
+    } catch (error: any) {
         if (error.code === 500) {
             return next(new HttpError(error.message.status, error.message));
         }

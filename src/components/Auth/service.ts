@@ -26,7 +26,7 @@ const AuthService: IAuthService = {
                 password: body.password,
             });
 
-            const query: IUserModel = await UserModel.findOne({
+            const query: IUserModel | null = await UserModel.findOne({
                 email: body.email,
             });
 
@@ -37,7 +37,7 @@ const AuthService: IAuthService = {
             const saved: IUserModel = await user.save();
 
             return saved;
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(error);
         }
     },
@@ -54,18 +54,18 @@ const AuthService: IAuthService = {
                 throw new Error(validate.error.message);
             }
 
-            const user: IUserModel = await UserModel.findOne({
+            const user: IUserModel | null = await UserModel.findOne({
                 email: body.email,
             });
 
-            const isMatched: boolean = user && await user.comparePassword(body.password);
+            const isMatched: boolean | null = user && await user.comparePassword(body.password);
 
-            if (isMatched) {
+            if (isMatched && user) {
                 return user;
             }
 
             throw new Error('Invalid password or email');
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(error);
         }
     },

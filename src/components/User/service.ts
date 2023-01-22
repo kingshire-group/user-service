@@ -16,7 +16,7 @@ const UserService: IUserService = {
     async findAll(): Promise < IUserModel[] > {
         try {
             return await UserModel.find({});
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(error.message);
         }
     },
@@ -38,8 +38,8 @@ const UserService: IUserService = {
 
             return await UserModel.findOne({
                 _id: new Types.ObjectId(id),
-            });
-        } catch (error) {
+            }) as any;
+        } catch (error: any) {
             throw new Error(error.message);
         }
     },
@@ -60,7 +60,7 @@ const UserService: IUserService = {
             const user: IUserModel = await UserModel.create(body);
 
             return user;
-        } catch (error) {
+        } catch (error: any) {
             throw new Error(error.message);
         }
     },
@@ -80,12 +80,12 @@ const UserService: IUserService = {
                 throw new Error(validate.error.message);
             }
 
-            const user: IUserModel = await UserModel.findOneAndRemove({
+            const user: IUserModel | null= await UserModel.findOneAndRemove({
                 _id: new Types.ObjectId(id),
             });
 
-            return user;
-        } catch (error) {
+            return user as any;
+        } catch (error: any) {
             throw new Error(error.message);
         }
     },
