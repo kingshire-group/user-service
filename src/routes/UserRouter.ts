@@ -1,4 +1,4 @@
-import { Router } from 'express';
+/* import { Router } from 'express';
 import { UserComponent } from '../components';
 
 const router: Router = Router();
@@ -9,3 +9,4 @@ router.get('/:id', UserComponent.findOne);
 router.delete('/:id', UserComponent.remove);
 
 export default router;
+ */

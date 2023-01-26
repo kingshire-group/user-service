@@ -1,11 +1,28 @@
-import Joi from 'joi';
+import { jwt } from "../../config/services"
+import { IUserModel, Profile } from "../User/model"
+
+export class AuthService{
+
+	refreshToken = async (token: string, ipAddress: string) => {
+		
+	}
+
+	generateRefreshToken = (user: IUserModel, ipAddress: string) => {
+
+	}
+
+	generateToken = (user: IUserModel) => 
+		jwt.sign({uid: user._id, role: user.profile.role})
+}
+
+/* import Joi from 'joi';
 import AuthValidation from './validation';
-import UserModel, { IUserModel } from '../User/model';
+import UserModel, { IUserModel, Profile } from '../User/model';
 import { IAuthService } from './interface';
 
 const AuthService: IAuthService = {
-	async createUser(body: IUserModel): Promise < IUserModel > {
-		try {
+	async createUser(body: Profile): Promise < Profile > {
+		* try {
 			const validate: Joi.ValidationResult = AuthValidation.createUser(body);
 			if (validate.error) {
 				throw new Error(validate.error.message);
@@ -21,10 +38,10 @@ const AuthService: IAuthService = {
 					throw new Error('This email already exists');
 			}
 			const saved: IUserModel = await user.save();
-			return saved;
+			return saved.profile;
 		} catch (error: any) {
 				throw new Error(error);
-		}
+		} *
 	},
 
 	async getUser(body: IUserModel): Promise < IUserModel > {
@@ -34,9 +51,9 @@ const AuthService: IAuthService = {
 					throw new Error(validate.error.message);
 			}
 			const user: IUserModel | null = await UserModel.findOne({
-					email: body.email,
+					email: body.profile.email,
 			});
-			const isMatched: boolean | null = user && await user.comparePassword(body.password);
+			const isMatched: boolean | null = user && await user.comparePassword(body.profile.password);
 			if (isMatched && user) {
 					return user;
 			}
@@ -48,3 +65,4 @@ const AuthService: IAuthService = {
 };
 
 export default AuthService;
+ */

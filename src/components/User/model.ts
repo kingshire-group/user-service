@@ -12,25 +12,25 @@ enum ROLES {
 }
 
 export interface IUserModel extends Document {
+	profile: Profile
+	services: Services[]
+	skills: Skills[]
+	passwordResetToken: string
+	passwordResetExpires: Date
+	google_id: string
+	token: AuthToken
+	comparePassword: (password: string) => Promise < boolean > 
+	gravatar: (size: number) => string
+}
+
+export type Profile = {
 	username: string
 	fullname: string
 	email: string
 	role: string
-	description: string
-	services: Services[]
-	skills: Skills[]
 	password: string
-	passwordResetToken: string
-	passwordResetExpires: Date
-	google: string
-	token: AuthToken
-	profile: {
-		name: string,
-		gender: string,
-		picture: string,
-	}
-	comparePassword: (password: string) => Promise < boolean > 
-	gravatar: (size: number) => string
+	profile_picture: string
+	description: string
 }
 
 export type AuthToken = {
@@ -51,60 +51,63 @@ export type Skills = {
 }
 
 const UserSchema: Schema = new Schema({
-	fullName: {
-		type: String,
-		trim: true
+	profile: {
+		fullName: {
+			type: String,
+			trim: true
+		},
+		username: {
+			type: String,
+			unique: true,
+			trim: true
+		},
+		email: {
+			type: String,
+			unique: true,
+			trim: true,
+		},
+		role: {
+			type: String,
+			enum: Object.values(ROLES),
+			default: ROLES.CLIENT
+		},
+		password: {
+			type: String,
+			minlength: 6
+		},
+		isKinglancer: {
+			type: Boolean,
+			default: false
+		},
+		description: String,
+		profilePicture: String,
+		averageRating: Number,
 	},
-	username: {
-		type: String,
-		required: true,
-		unique: true,
-		trim: true
-	},
-	email: {
-		type: String,
-		unique: true,
-		trim: true,
-	},
-	role: {
-		type: String,
-		enum: Object.values(ROLES),
-		default: ROLES.CLIENT
-	},
-	password: {
-		type: String,
-		minlength: 6
-	},
-	auth: {
-		google: {
-			id: String,
-			token: String
-		}
-	},
+	google_id: String,
 	services: Array,
-	description: String,
 	skills: Array,
-	profilePicture: String,
-	averageRating: Number,
 	passwordResetToken: String,
 	passwordResetExpires: Date,
 }, {
 	collection: 'usermodel',
-	versionKey: true,
+	versionKey: false,
 	timestamps: true
 });
 
 UserSchema.pre('save', async function (next): Promise < void > {
-	const user: IUserModel = this; // tslint:disable-line
-	if (!user.isModified('password')) {
+	const user: IUserModel = this;
+	if (!user.isModified('profile.password')) {
 		return next();
 	}
 
 	try {
-		const salt: string = await bcrypt.genSalt(10);
-		const hash: string = await bcrypt.hash(user.password, salt);
-		user.password = hash;
-		next();
+		if (user.profile.password){const salt: string = await bcrypt.genSalt(10);
+			const hash: string = await bcrypt.hash(user.profile.password, salt);
+			user.profile.password = hash;
+			next();
+		} else{
+			throw new Error('Password Not Found!')
+		}
 	} catch (error: any) {
 		return next(error);
 	}

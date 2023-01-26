@@ -1,6 +1,6 @@
-import { IUserModel } from '../User/model';
+import { IUserModel, Profile } from '../User/model';
 
 export interface IAuthService {
-	createUser(userModel: IUserModel): Promise < IUserModel >
+	createUser(userModel: Profile): Promise < Profile >
 	getUser(userModel: IUserModel): Promise < IUserModel >
 }

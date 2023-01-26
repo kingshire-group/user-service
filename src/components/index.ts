@@ -1,7 +1,5 @@
-import * as AuthComponent from './Auth';
-import * as UserComponent from './User';
+import * as SignupComponent from './Auth/signup'
 
 export {
-	AuthComponent,
-	UserComponent,
+	SignupComponent
 };

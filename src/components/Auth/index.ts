@@ -1,13 +1,16 @@
-import { NextFunction, Request, Response } from 'express';
+/* import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import app from '../../config/server/server';
-import AuthService from './service';
+
 import HttpError from '../../config/error';
-import { IUserModel } from '../User/model';
+import { IUserModel, Profile } from '../User/model';
+import Logger from '../../config/services/logger';
 
 export async function signup(req: Request, res: Response, next: NextFunction): Promise < void > {
 	try {
-		const user: IUserModel = await AuthService.createUser(req.body);
+		const user: Profile = await AuthService.createUser(req.body);
+		Logger.info(user)
+		* 
 		const token: string = jwt.sign({ email: user.email }, app.get('secret'), {
 			expiresIn: '60m',
 		});
@@ -16,7 +19,7 @@ export async function signup(req: Request, res: Response, next: NextFunction): P
 			logged: true,
 			token,
 			message: 'Sign in successfull',
-		});
+		}); *
 	} catch (error: any) {
 			if (error.code === 500) {
 				return next(new HttpError(error.message.status, error.message));
@@ -26,13 +29,13 @@ export async function signup(req: Request, res: Response, next: NextFunction): P
 				message: error.message,
 			});
 	}
-}
-
+} */
+/* 
 export async function login(req: Request, res: Response, next: NextFunction): Promise < void > {
 	try {
 		const user: IUserModel = await AuthService.getUser(req.body);
 
-		const token: string = jwt.sign({ email: user.email }, app.get('secret'), {
+		const token: string = jwt.sign({ email: user.profile.email }, app.get('secret'), {
 			expiresIn: '60m',
 		});
 		res.json({
@@ -51,3 +54,4 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
 			});
 	}
 }
+ */

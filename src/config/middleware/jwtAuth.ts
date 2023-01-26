@@ -4,14 +4,6 @@ import http from 'http';
 import app from '../server/server';
 import HttpError from '../error';
 
-declare global {
-	namespace Express {
-		interface Request {
-			user: any;
-		}
-	}
- }
-
 export function isAuthenticated(req: Request, res: Response, next: NextFunction): void {
 	const token: string | string[] | undefined = req.headers['x-access-token'];
 

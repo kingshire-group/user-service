@@ -1,14 +1,16 @@
+import config from '../env'
 import jwt from 'jsonwebtoken';
+import Logger from './logger';
 
 export const sign = (data: any) => {
-  const token = jwt.sign(data, process.env.JWT_SECRET || '', {
-    expiresIn: process.env.JWT_EXPIRES
+  const token = jwt.sign(data, config.auth.jwt.secret || '', {
+    expiresIn: config.auth.jwt.expiryTime
   });
   return token;
 };
 
 export const verify = (token: any) => {
-  return jwt.verify(token, process.env.JWT_SECRET || '', { ignoreExpiration: false });
+  return jwt.verify(token, config.auth.jwt.secret || '', { ignoreExpiration: false });
 };
 
 export const refreshSign = (uid: any) => {
