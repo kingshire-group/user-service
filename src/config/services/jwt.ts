@@ -49,11 +49,3 @@ export const getToken = (req: any) => {
   }
   return token;
 };
-
-export default {
-  sign,
-  verify,
-  getToken,
-  refreshSign,
-  refreshVerify
-};

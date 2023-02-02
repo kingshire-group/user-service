@@ -1,4 +1,4 @@
-import { IUserModel } from './model';
+import { IUserModel } from './user.model';
 
 
 export interface IUserService {

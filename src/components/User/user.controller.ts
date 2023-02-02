@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import UserService from './service';
+import UserService from './user.service';
 import { HttpError } from '../../config/error';
-import { IUserModel } from './model';
+import { IUserModel } from './user.model';
 
 export async function findAll(req: Request, res: Response, next: NextFunction): Promise < void > {
 	try {

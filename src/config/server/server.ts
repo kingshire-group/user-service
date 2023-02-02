@@ -2,7 +2,6 @@ import express from 'express';
 import * as Middleware from '../middleware/middleware';
 import * as Routes from '../../routes';
 
-
 const app: express.Application = express();
 
 Middleware.configure(app);

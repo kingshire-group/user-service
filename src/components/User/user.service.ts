@@ -1,8 +1,8 @@
 import Joi from 'joi';
 import { Types } from 'mongoose';
-import UserModel, { IUserModel } from './model';
+import UserModel, { IUserModel } from './user.model';
 import UserValidation from './validation';
-import { IUserService } from './interface';
+import { IUserService } from './user.interface';
 
 const UserService: IUserService = {
 	async findAll(): Promise < IUserModel[] > {

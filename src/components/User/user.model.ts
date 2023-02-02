@@ -83,7 +83,7 @@ const UserSchema: Schema = new Schema({
 		profilePicture: String,
 		averageRating: Number,
 	},
-	google_id: String,
+	google: String,
 	services: Array,
 	skills: Array,
 	passwordResetToken: String,
