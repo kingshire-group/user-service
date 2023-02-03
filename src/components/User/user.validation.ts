@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import Validation from '../validation';
-import { IUserModel } from './model';
+import { IUserModel } from './user.model';
 
 class UserValidation extends Validation {
 

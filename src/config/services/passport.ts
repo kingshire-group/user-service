@@ -1,10 +1,15 @@
 import passport from 'passport';
 import { Strategy as StrategyJwt, ExtractJwt, JwtFromRequestFunction } from 'passport-jwt';
-import * as passportLocal from 'passport-local';
+import passportLocal from 'passport-local';
 import _ from 'lodash';
 import Logger from './logger';
-import config from '../env';
+import config from '../env'
+import UserModel, 
+{ 
+  IUserModel,
+} from "../../components/User/user.model"
 
+console.log('Passport file')
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
   //done(null, user.id);
@@ -49,24 +54,24 @@ passport.use(
 // local
 const localOpts = {
   usernameField: 'email'
-};
-const LocalStrategy = passportLocal.Strategy;
+}
+const LocalStrategy = passportLocal.Strategy
 const localStrategy = new LocalStrategy(localOpts, (email, password, done) => {
-  Logger.info('========localStrategy========');
-  /* User.findOne({
+  Logger.info('========localStrategy========')
+  UserModel.findOne({
     email
   })
     .then(user => {
       if (!user) {
-        return done(null, false);
-      } else if (!user.verifyPassword(password)) {
-        return done(null, false);
+        return done(null, false)
+      } else if (!user.comparePassword(password)) {
+        return done(null, false)
       }
-      return done(null, user);
+      return done(null, user)
     })
     .catch(err => {
-      return done(err, false);
-    }); */
-});
+      return done(err, false)
+    }) 
+})
 
-passport.use(localStrategy);
+passport.use(localStrategy)

@@ -15,7 +15,6 @@ components:
             description: Error description
             example: User created
 
-    schemas:
       UserSchema:
         required:
           - email

@@ -1,7 +1,7 @@
-import * as AuthComponent from './Auth';
-import * as UserComponent from './User';
+import * as SignupComponent from './Auth/signup/signup.controller'
+import * as LoginComponent from './Auth/login/login.controller'
 
 export {
-	AuthComponent,
-	UserComponent,
+	SignupComponent,
+	LoginComponent
 };

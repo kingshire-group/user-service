@@ -17,7 +17,7 @@ abstract class Validation {
 							return 'Error'
 					}
 
-					return value; // Keep the value as it was
+					return value;
 			},
 		}));
 	}

@@ -1,11 +1,12 @@
-import bodyParser from 'body-parser';
-import compression from 'compression';
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import express from 'express';
-import helmet from 'helmet';
-import { HttpError } from '../error/index';
-import { sendHttpErrorModule } from '../error/sendHttpError';
+import bodyParser from 'body-parser'
+import compression from 'compression'
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
+import express from 'express'
+import helmet from 'helmet'
+import passport from 'passport'
+import { HttpError } from '../error/index'
+import { sendHttpErrorModule } from '../error/sendHttpError'
 
 declare global{
 	namespace Express {
@@ -16,16 +17,18 @@ declare global{
 }
 
 export function configure(app: express.Application): void {
+	require('../services/passport')
 	app.use(bodyParser.urlencoded({
 		extended: false,
-	}));
-	app.use(bodyParser.json());
-	app.use(cookieParser());
-	app.use(compression());
-	app.use(helmet());
-	app.use(cors());
+	}))
+	app.use(bodyParser.json())
+	app.use(cookieParser())
+	app.use(compression())
+	app.use(helmet())
+	app.use(cors())
+	app.use(passport.initialize())
 
-	app.use(sendHttpErrorModule);
+	app.use(sendHttpErrorModule)
 
 	app.use((req, res, next) => {
 		res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS ');
@@ -37,8 +40,8 @@ export function configure(app: express.Application): void {
 			+ ' Access-Control-Allow-Credentials',
 		);
 		res.header('Access-Control-Allow-Credentials', 'true');
-		next();
-	});
+		next()
+	})
 }
 
 export function initErrorHandler(app: express.Application): void {
@@ -48,15 +51,15 @@ export function initErrorHandler(app: express.Application): void {
 		}
 
 		if (error instanceof HttpError) {
-			res.sendHttpError(error);
+			res.sendHttpError(error)
 		} else if (app.get('env') === 'development') {
 			error = new HttpError(500, error.message);
-			res.sendHttpError(error);
+			res.sendHttpError(error)
 		} else {
-			error = new HttpError(500);
-			res.sendHttpError(error, error.message);
+			error = new HttpError(500)
+			res.sendHttpError(error, error.message)
 		}
 
-		console.error(error);
+		console.error(error)
 	});
 }
