@@ -3,10 +3,19 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 import mongooseUniqueValidator from 'mongoose-unique-validator';
 import * as connections from '../../config/connection/connection';
 
+export interface IRefreshTokenModel extends Document {
+	token: string
+  expires?: Date
+  createdByIp: String
+  revoked?: Date
+  revokedByIp?: String
+  replacedByToken?: String
+}
+
 const TokenSchema: Schema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'UserModel',
     required: true
   },
   refreshTokens: [
@@ -33,7 +42,7 @@ const TokenSchema: Schema = new Schema({
   timestamps: true
 })
 
-UserSchema.plugin(mongoosePaginate);
-UserSchema.plugin(mongooseUniqueValidator);
+TokenSchema.plugin(mongoosePaginate);
+TokenSchema.plugin(mongooseUniqueValidator);
 
-export default connections.db.model('TokenModel', TokenSchema)
+export default connections.db.model<IRefreshTokenModel>('TokenModel', TokenSchema)

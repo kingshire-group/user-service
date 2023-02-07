@@ -1,41 +1,74 @@
-import {
-  jwt,
-  Retort
-} from '../../config/services'
-import { IUserModel } from '../User/user.model'
-import {
-  NextFunction,
-  Request,
-  Response
-} from 'express'
+import { jwt } from '../../config/services'
+import { Profile } from '../User/user.model'
+import { CookieOptions, Response } from 'express'
+import tokenDbCall from './token.dbCall'
+import Logger from '../../config/services/logger'
+import { IRefreshTokenModel } from './token.model'
 
-const generateToken = (user: IUserModel) => {
-  return jwt.sign({
-    uid: user._id,
-    username: user.profile.username
-  })
-}
+const generateToken = (user: Profile) => 
+  jwt.sign({ username: user.username, role: user.role })
 
-const generateRefreshToken = async (user: IUserModel, ipAddress: string) => {
-  const refreshToken = jwt.refreshSign(user._id)
-  // save the token
-  return await refreshTokenService.create({
-    user: user._id,
+const saveNewUserRefreshToken = async (refreshToken: string, userId: string, ipAddress: string) => {
+  const findQuery = { user: userId }
+  const tokenData = {
     token: refreshToken,
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     createdByIp: ipAddress
+  }
+
+  return await tokenDbCall.create({
+    input: {
+      ...findQuery, ...tokenData
+    },
+    findQuery
   })
 }
 
+const saveExistingUserRefreshToken = async (userId: string, ipAddress: string,
+   refreshToken: string, cookieToken: string) => {
+  const foundUserTokens = await tokenDbCall.findOne({ user: userId })
+  var newRefreshTokensArray
+    
+  
+  if(cookieToken) {
+    const foundToken = foundUserTokens.refreshTokens.find((rt: IRefreshTokenModel) =>
+      rt.token === cookieToken)
+
+    if(!foundToken) { newRefreshTokensArray = [] }
+    else{ 
+      newRefreshTokensArray =
+        foundUserTokens.refreshTokens
+          .filter((rt: IRefreshTokenModel) => rt.token !== foundToken) 
+    }
+  }
+
+  foundUserTokens.refreshTokens = [...newRefreshTokensArray, {
+    token: refreshToken,
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    createdByIp: ipAddress
+  }]
+
+  return await foundUserTokens.save()
+} 
+
 const setTokenCookie = (res: Response, token: string) => {
-  const cookieOptions = {
+  const cookieOptions: CookieOptions = {
     httpOnly: true,
     secure: true,
-    sameSite: 'None',
+    sameSite: 'none',
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
   }
   res.cookie('refreshToken', token, cookieOptions)
-};
+}
+
+const deleteTokenCookie = (res: Response) => {
+  const cookieOptions: CookieOptions = {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+  }
+  res.clearCookie('refreshToken', cookieOptions);
+}
 
 
 
@@ -68,3 +101,10 @@ const setTokenCookie = (res: Response, token: string) => {
 //   }
 // };
 
+export default {
+  generateToken,
+  saveNewUserRefreshToken,
+  setTokenCookie,
+  deleteTokenCookie,
+  saveExistingUserRefreshToken
+}
