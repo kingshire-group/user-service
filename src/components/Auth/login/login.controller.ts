@@ -5,7 +5,7 @@ import Logger from "../../../config/services/logger";
 import tokenController from "../../Token/token.controller";
 import { IUserModel } from "../../User/user.model";
 
-export const login = async (req: Request, res: Response, userIsNew: boolean) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     var newRefreshToken
     const cookiesRefreshToken = req.cookies.refreshToken
@@ -14,7 +14,7 @@ export const login = async (req: Request, res: Response, userIsNew: boolean) => 
     const token = tokenController.generateToken(user.profile)
     newRefreshToken = jwt.refreshSign(user._id)
 
-    if(!userIsNew){
+    if(!req.isNewUser){
       await tokenController
         .saveNewUserRefreshToken(newRefreshToken, user._id, ipAddress)
     }else{

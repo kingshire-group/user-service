@@ -9,7 +9,14 @@ import { SignupValidation } from "./signup.validation"
 import { login } from "../login/login.controller"
 
 const validate = new SignupValidation()
-const authServiceInstance = new AuthService()
+
+declare global {
+  namespace Express {
+    interface Request {
+      isNewUser: boolean
+    }
+  }
+}
 
 export const createUserProfile = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -22,9 +29,11 @@ export const createUserProfile = async (req: Request, res: Response, next: NextF
 
 export const createUsername = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const isNewUser = true
     const user: IUserModel = await saveUsername(req.body)
     req.user = user
-    login(req, res, 'create')
+    req.isNewUser = isNewUser
+    login(req, res, next)
   } catch (error: any) {
     Retort.error(res, { message: error.message }, error.code)
   }
