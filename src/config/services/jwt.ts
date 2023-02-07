@@ -1,32 +1,31 @@
 import config from '../env'
 import jwt from 'jsonwebtoken';
-import Logger from './logger';
 
-export const sign = (data: any) => {
+const sign = (data: any) => {
   const token = jwt.sign(data, config.auth.jwt.secret || '', {
     expiresIn: config.auth.jwt.expiryTime
   });
   return token;
 };
 
-export const verify = (token: any) => {
+const verify = (token: any) => {
   return jwt.verify(token, config.auth.jwt.secret || '', { ignoreExpiration: false });
 };
 
-export const refreshSign = (uid: any) => {
+const refreshSign = (uid: any) => {
   const token = jwt.sign({ uid: uid }, process.env.JWT_REFRESH_SECRET || '', {
     expiresIn: process.env.JWT_REFRESH_EXPIRES
   });
   return token;
 };
 
-export const refreshVerify = (token: any) => {
+const refreshVerify = (token: any) => {
   return jwt.verify(token, process.env.JWT_REFRESH_SECRET || '', {
     ignoreExpiration: false
   });
 };
 
-export const getToken = (req: any) => {
+const getToken = (req: any) => {
   let authorization = null;
   let token = null;
   if (req.query && req.query.token) {
@@ -49,3 +48,11 @@ export const getToken = (req: any) => {
   }
   return token;
 };
+
+export default{
+  sign,
+  verify,
+  refreshSign,
+  refreshVerify,
+  getToken
+}
