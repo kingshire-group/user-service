@@ -1,17 +1,30 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import { Retort } from "../../../config/services";
+import { jwt, Retort } from "../../../config/services";
 import Logger from "../../../config/services/logger";
+import tokenController from "../../Token/token.controller";
 import { IUserModel } from "../../User/user.model";
-import { IUserAuthenticate } from "../auth.interface";
-import { AuthService } from "../auth.service";
 
-
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (req: Request, res: Response, userIsNew: boolean) => {
   try {
-    const user: IUserAuthenticate = req.body
-    const ipAddress: string = req.ip
-    
+    var newRefreshToken
+    const cookiesRefreshToken = req.cookies.refreshToken
+    const user = req.user as IUserModel
+    const ipAddress = req.ip
+    const token = tokenController.generateToken(user.profile)
+    newRefreshToken = jwt.refreshSign(user._id)
+
+    if(!userIsNew){
+      await tokenController
+        .saveNewUserRefreshToken(newRefreshToken, user._id, ipAddress)
+    }else{
+      await tokenController
+        .saveExistingUserRefreshToken(user._id, ipAddress, newRefreshToken, cookiesRefreshToken)
+    }
+
+    tokenController.deleteTokenCookie(res)
+    tokenController.setTokenCookie(res, newRefreshToken)
+    Retort.success(res, { message: 'Sign successfull', token})
   } catch (error: any) {
     Retort.error(res, { message: error.message }, error.code)
   }
@@ -32,5 +45,6 @@ export const authLocal =
             401
           )
         }
+        req.user = user
         return next()
     })(req, res, next)

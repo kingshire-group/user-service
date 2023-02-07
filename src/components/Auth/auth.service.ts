@@ -23,15 +23,4 @@ export class AuthService{
 	
 		return next(new HttpError(400, 'No token provided'));
 	}
-
-	refreshToken = async (token: string, ipAddress: string) => {
-		
-	}
-
-	generateRefreshToken = (user: IUserModel, ipAddress: string) => {
-
-	}
-
-	generateToken = (user: Profile) => 
-		jwt.sign({username: user.username, role: user.role})
 }
