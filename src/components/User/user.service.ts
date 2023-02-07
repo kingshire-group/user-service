@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import { Types } from 'mongoose';
 import UserModel, { IUserModel } from './user.model';
-import UserValidation from './validation';
+import UserValidation from './user.validation';
 import { IUserService } from './user.interface';
 
 const UserService: IUserService = {
