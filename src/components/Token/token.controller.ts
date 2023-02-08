@@ -34,7 +34,10 @@ const saveExistingUserRefreshToken = async (userId: string, ipAddress: string,
     const foundToken = foundUserTokens.refreshTokens.find((rt: IRefreshTokenModel) =>
       rt.token === cookieToken)
 
-    if(!foundToken) { newRefreshTokensArray = [] }
+    if(!foundToken) {
+      // More will be done here
+      newRefreshTokensArray = []
+    }
     else{ 
       newRefreshTokensArray =
         foundUserTokens.refreshTokens
