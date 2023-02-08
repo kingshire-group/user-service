@@ -11,9 +11,11 @@ const generateToken = (user: Profile) =>
 const saveNewUserRefreshToken = async (refreshToken: string, userId: string, ipAddress: string) => {
   const findQuery = { user: userId }
   const tokenData = {
-    token: refreshToken,
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    createdByIp: ipAddress
+    refreshTokens: [{
+      token: refreshToken,
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      createdByIp: ipAddress
+    }]
   }
 
   return await tokenDbCall.create({

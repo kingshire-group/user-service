@@ -2,25 +2,25 @@ import config from '../env'
 import jwt from 'jsonwebtoken';
 
 const sign = (data: any) => {
-  const token = jwt.sign(data, config.auth.jwt.secret || '', {
-    expiresIn: config.auth.jwt.expiryTime
+  const token = jwt.sign(data, config.auth.jwt.access.secret || '', {
+    expiresIn: config.auth.jwt.access.expiryTime
   });
   return token;
 };
 
 const verify = (token: any) => {
-  return jwt.verify(token, config.auth.jwt.secret || '', { ignoreExpiration: false });
+  return jwt.verify(token, config.auth.jwt.access.secret || '', { ignoreExpiration: false });
 };
 
 const refreshSign = (uid: any) => {
-  const token = jwt.sign({ uid: uid }, process.env.JWT_REFRESH_SECRET || '', {
-    expiresIn: process.env.JWT_REFRESH_EXPIRES
+  const token = jwt.sign({ uid }, config.auth.jwt.refresh.secret || '', {
+    expiresIn: config.auth.jwt.refresh.expiryTime
   });
   return token;
 };
 
 const refreshVerify = (token: any) => {
-  return jwt.verify(token, process.env.JWT_REFRESH_SECRET || '', {
+  return jwt.verify(token, config.auth.jwt.refresh.secret || '', {
     ignoreExpiration: false
   });
 };

@@ -16,10 +16,10 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
     if(!req.isNewUser){
       await tokenController
-        .saveNewUserRefreshToken(newRefreshToken, user._id, ipAddress)
+        .saveExistingUserRefreshToken(user._id, ipAddress, newRefreshToken, cookiesRefreshToken)
     }else{
       await tokenController
-        .saveExistingUserRefreshToken(user._id, ipAddress, newRefreshToken, cookiesRefreshToken)
+        .saveNewUserRefreshToken(newRefreshToken, user._id, ipAddress)
     }
 
     tokenController.deleteTokenCookie(res)

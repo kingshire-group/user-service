@@ -26,6 +26,11 @@ interface IGoogleAuth{
 }
 
 interface IJWT{
+	access: IToken
+	refresh: IToken
+}
+
+interface IToken{
 	secret: string
 	expiryTime: string
 }
@@ -46,8 +51,14 @@ const development: IConfig = {
 			callbackURL: process.env.GOOGLE_CALLBACK_URL || ''
 		},
 		jwt: {
-			secret: process.env.JWT_SECRET || '',
-			expiryTime: process.env.JWT_EXPIRATION || ''
+			access: {
+				secret: process.env.JWT_SECRET || '',
+				expiryTime: process.env.JWT_EXPIRATION || ''
+			},
+			refresh: {
+				secret: process.env.JWT_REFRESH_SECRET || '',
+				expiryTime: process.env.JWT_EXPIRATION || ''
+			}
 		}
 	}
 };
@@ -66,8 +77,14 @@ const production: IConfig = {
 			callbackURL: process.env.GOOGLE_CALLBACK_URL || ''
 		},
 		jwt: {
-			secret: process.env.JWT_SECRET || '',
-			expiryTime: process.env.JWT_EXPIRATION || ''
+			access: {
+				secret: process.env.JWT_SECRET || '',
+				expiryTime: process.env.JWT_EXPIRATION || ''
+			},
+			refresh: {
+				secret: process.env.JWT_REFRESH_SECRET || '',
+				expiryTime: process.env.JWT_EXPIRATION || ''
+			}
 		}
 	}
 };
@@ -86,8 +103,14 @@ const test: IConfig = {
 			callbackURL: process.env.GOOGLE_CALLBACK_URL || ''
 		},
 		jwt: {
-			secret: process.env.JWT_SECRET || '',
-			expiryTime: process.env.JWT_EXPIRATION || ''
+			access: {
+				secret: process.env.JWT_SECRET || '',
+				expiryTime: process.env.JWT_EXPIRATION || ''
+			},
+			refresh: {
+				secret: process.env.JWT_REFRESH_SECRET || '',
+				expiryTime: process.env.JWT_EXPIRATION || ''
+			}
 		}
 	}
 };

@@ -9,7 +9,6 @@ import UserModel,
   IUserModel,
 } from "../../components/User/user.model"
 
-console.log('Passport file')
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
   //done(null, user.id);
@@ -33,7 +32,7 @@ jwtOpts.jwtFromRequest = ExtractJwt.fromExtractors([
   ExtractJwt.fromAuthHeaderWithScheme('Bearer'), 
   ExtractJwt.fromUrlQueryParameter("token")
 ]);
-jwtOpts.secretOrKey = config.auth.jwt.secret;
+jwtOpts.secretOrKey = config.auth.jwt.access.secret;
 passport.use(
   new StrategyJwt(jwtOpts, function(payload, done) {
     /* User.findOne({ _id: payload.uid })

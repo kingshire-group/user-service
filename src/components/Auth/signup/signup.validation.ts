@@ -24,6 +24,6 @@ export class SignupValidation extends Validation{
 
   createUsernameSchema = (username: string) : Joi.ValidationResult => {
     const schema: Joi.Schema = Joi.object().keys(usernameSchemaField)
-    return schema.validate(username)
+    return schema.validate({ username })
   }
 }

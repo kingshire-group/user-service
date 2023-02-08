@@ -25,7 +25,7 @@ class DatabaseCall{
     const found = await this._model.findOne(data.findQuery)
     
     if(found) throw new Error('Already exists. Stopped!')
-    return await this._model.create(data)
+    return await this._model.create(data.input)
   }
 
   update = async (query: any) => {}

@@ -53,7 +53,7 @@ const saveUserProfile = async (payload: Profile) => {
       throw new Error('This email already exists')
     }
 
-    const user: IUserModel = new UserModel(value)
+    const user: IUserModel = new UserModel({ profile: value })
     const saved: IUserModel = await user.save()
     return saved
   } catch (error: any) {
