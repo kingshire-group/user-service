@@ -47,7 +47,7 @@ const saveUserProfile = async (payload: Profile) => {
       throw new Error(error.message)
     }
     const query: IUserModel | null = await UserModel.findOne({
-      email: payload.email
+      'profile.email': payload.email
     })
     if (query){
       throw new Error('This email already exists')
@@ -63,13 +63,13 @@ const saveUserProfile = async (payload: Profile) => {
 
 const saveUsername = async (payload: IUsernameCreation) => {
   try {
-    const validator: Joi.ValidationResult = validate.createUsernameSchema(payload.username)
+    const validator: Joi.ValidationResult = validate.createUsernameSchema(payload)
     if(validator.error){
       throw new Error(validator.error.message)
     }
 
     const user: IUserModel | null = await UserModel.findOne({
-      email: payload.email
+      'profile.email': payload.email
     })
     if (!user){
       throw new Error('user not found!')

@@ -2,6 +2,7 @@ import Joi from "joi";
 import Logger from "../../../config/services/logger";
 import { Profile } from "../../User/user.model";
 import Validation from "../../validation";
+import { IUsernameCreation } from "../auth.interface";
 import { emailSchemaField, fullnameSchemaField, passwordSchemaField, usernameSchemaField } from "../auth.validation";
 
 
@@ -22,8 +23,9 @@ export class SignupValidation extends Validation{
     return schema.validate(user)
   }
 
-  createUsernameSchema = (username: string) : Joi.ValidationResult => {
-    const schema: Joi.Schema = Joi.object().keys(usernameSchemaField)
-    return schema.validate({ username })
+  createUsernameSchema = (payload: IUsernameCreation) : Joi.ValidationResult => {
+    const schema: Joi.Schema = Joi.object().keys({
+      ...usernameSchemaField, ...emailSchemaField })
+    return schema.validate(payload)
   }
 }
