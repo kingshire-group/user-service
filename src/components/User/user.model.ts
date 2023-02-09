@@ -4,6 +4,7 @@ import { Document, Schema } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import mongooseUniqueValidator from 'mongoose-unique-validator';
 import * as connections from '../../config/connection/connection';
+import Logger from '../../config/services/logger';
 
 enum ROLES {
   ADMIN = 'admin',
@@ -115,12 +116,12 @@ UserSchema.pre('save', async function (next): Promise < void > {
 
 UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise < boolean > {
 	try {
-		const match: boolean = await bcrypt.compare(candidatePassword, this.password);
-		return match;
+		const match: boolean = await bcrypt.compare(candidatePassword, this.profile.password)
+		return match
 	} catch (error: any) {
-		return error;
+		return error
 	}
-};
+}
 
 UserSchema.methods.gravatar = function (size: number): string {
 	if (!size) {
