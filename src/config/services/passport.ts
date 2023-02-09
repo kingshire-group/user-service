@@ -58,15 +58,20 @@ const LocalStrategy = passportLocal.Strategy
 const localStrategy = new LocalStrategy(localOpts, (email, password, done) => {
   Logger.info('========localStrategy========')
   UserModel.findOne({
-    email
+    'profile.email': email
   })
-    .then(user => {
+    .then(async user => {
       if (!user) {
         return done(null, false)
-      } else if (!user.comparePassword(password)) {
-        return done(null, false)
+      } else {
+        const passwordMatch = await user.comparePassword(password)
+        
+        if(!passwordMatch) {
+          return done(null, false)
+        }
+
+        return done(null, user)
       }
-      return done(null, user)
     })
     .catch(err => {
       return done(err, false)
