@@ -1,9 +1,7 @@
 // There are two steps to logging in
 // 1. using email/username
-// - if email/username is not in the database 
-// -> It should return an error for non existing user
-// - if the password does not match
-// -> It should return an error
+// - return error if email/username is not in the database ✅ 
+// - return error if the password does not match ✅
 
 // 2. using gmail
 // - if email is not in the database,

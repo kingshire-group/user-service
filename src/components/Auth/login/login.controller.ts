@@ -37,7 +37,7 @@ export const authLocal =
         if (err) return next(err)
         
         if(!user) {
-          Retort.error(res,
+          return Retort.error(res,
             {
               code: 'Unauthorized',
               message: 'Your email or password is incorrect'
